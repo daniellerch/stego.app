@@ -1,5 +1,69 @@
-<h1>hello stego.app</h1>
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="stego.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js""></script>
+        <script src="https://cdn.jsdelivr.net/pyodide/v0.19.1/full/pyodide.js"></script>
+    </head>
 
-<script>
-  document.writeln("hey");
-</script>
+    <body>
+
+        <button id='run'>RUN</button><br><br>
+
+        <input type="file" id="file" name="file">
+        <div>
+            <canvas style="width:90%" id="cover-image"></canvas>
+        </div>
+
+
+        <script type="text/javascript">
+
+        var image_url = "";
+
+        function handleFileSelect(e) {
+            var file = e.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                imageToURL(e.target.result, function(iurl){
+                    image_url = iurl;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById('file').addEventListener('change', handleFileSelect, false);
+
+
+
+
+        async function main(){
+
+            let pyodide = await loadPyodide({
+                indexURL : "https://cdn.jsdelivr.net/pyodide/v0.19.1/full/"
+            });
+       
+            pyodide.loadPackage(['scipy', 'numpy', 'pillow']).then(() => {
+
+                $.ajaxSetup({ cache: false });
+                $.get("stego.py", function(response) {
+
+                    pyodide.globals.set("image_url", image_url);
+
+                    var pycode = response;
+                    pyodide.runPython(pycode);
+                });
+
+            });
+        }
+
+        $('#run').click(function(){
+            main();
+        });
+
+        </script>
+
+    </body>
+</html>
+
+
+
