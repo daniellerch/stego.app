@@ -267,7 +267,6 @@ async function loadPyodideAndPackages() {
    // {{{
    try {
       gPyodide = await loadPyodide({
-         //indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/"
          indexURL: "pyodide-0.26.2"
       });
 
