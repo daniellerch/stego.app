@@ -1,69 +1,48 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <script src="stego.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js""></script>
-        <script src="https://cdn.jsdelivr.net/pyodide/v0.19.1/full/pyodide.js"></script>
-    </head>
-
-    <body>
-
-        <button id='run'>RUN</button><br><br>
-
-        <input type="file" id="file" name="file">
-        <div>
-            <canvas style="width:90%" id="cover-image"></canvas>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hide Your Secrets</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!--script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script-->
+    <script src="pyodide-0.26.2/pyodide.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class='canvas-container'>
+           <canvas class="hacker-image" id="cover-image"></canvas>
         </div>
 
+        <h1 id='info' class="info">Hide your secrets into images</h1>
+        <h2 id='log' class="log"></h2>
+        <center><img id='loading' class='loading' src='images/loading.gif'/></center>
 
-        <script type="text/javascript">
+        <div class="button-container">
+            <textarea id='message' class="textarea-input" placeholder="Enter your message here..."></textarea>
+            <label for="upload-button" id='upload-button-label' class="upload-button-label">Upload image</label>
+            <input type="file" id="upload-button" name="upload-button" accept="image/*">
+            <button id="download-button" class="action-button">Download image</button>
 
-        var image_url = "";
+            <select id='method' class="select">
+               <option id="R01">Robust steganography</option>
+            </select>
 
-        function handleFileSelect(e) {
-            var file = e.target.files[0];
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                imageToURL(e.target.result, function(iurl){
-                    image_url = iurl;
-                });
-            };
-            reader.readAsDataURL(file);
-        }
+            <input type="password" id='password' class="password" placeholder="Password">
+            <button id="next-button" class="action-button">Next</button>
+            <button id="hide-button" class="action-button">Hide message</button>
+            <button id="hide2-button" class="action-button">Hide message</button>
+            <button id="extract-button" class="action-button">Extract message</button>
+            <button id="extract2-button" class="action-button">Extract message</button>
+            <div id='navigation' class="restart-back-container">
+               <button id="back-button" class="action-button small-button">&lArr; Back</button>
+               <button id="restart-button" class="action-button small-button">&#8635; Restart</button>
+            </div>
 
-        document.getElementById('file').addEventListener('change', handleFileSelect, false);
-
-
-
-
-        async function main(){
-
-            let pyodide = await loadPyodide({
-                indexURL : "https://cdn.jsdelivr.net/pyodide/v0.19.1/full/"
-            });
-       
-            pyodide.loadPackage(['scipy', 'numpy', 'pillow']).then(() => {
-
-                $.ajaxSetup({ cache: false });
-                $.get("stego.py", function(response) {
-
-                    pyodide.globals.set("image_url", image_url);
-
-                    var pycode = response;
-                    pyodide.runPython(pycode);
-                });
-
-            });
-        }
-
-        $('#run').click(function(){
-            main();
-        });
-
-        </script>
-
-    </body>
+        </div>
+    </div>
+    <script src="script.js"></script> 
+</body>
 </html>
-
-
 
