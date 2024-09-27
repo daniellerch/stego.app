@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StegoApp</title>
+    <title>StegoApp: Hide your secret messages inside pictures</title>
+    <meta name="description" content="StegoApp allows you to hide and extract messages. Secure your secrets with ease.">
+    <meta name="keywords" content="steganography, hide messages in images, secure image messaging, StegoApp, extract hidden messages">
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" sizes="64x64">
     <script src="pyodide-0.26.2/pyodide.js"></script>
 </head>
 <body>
@@ -16,7 +18,7 @@
 
         <h1 id='info' class="info">Hide your secrets into images</h1>
         <h2 id='log' class="log"></h2>
-        <center><img id='loading' class='loading' src='images/loading.gif'/></center>
+        <center><img id='loading' class='loading' src='images/loading.gif' alt='Loaded image'>/></center>
 
         <div class="button-container">
             <textarea id='message' class="textarea-input" placeholder="Enter your message here..."></textarea>
