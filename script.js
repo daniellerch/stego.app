@@ -18,6 +18,11 @@ const message = document.getElementById('message');
 const info = document.getElementById('info');
 const log = document.getElementById('log');
 const method = document.getElementById('method');
+const cookieBanner = document.getElementById('cookie-banner');
+const acceptButton = document.getElementById('accept-cookies');
+const rejectButton = document.getElementById('reject-cookies');
+
+
 
 
 function hideElement(elementId) {    
@@ -239,6 +244,28 @@ function setUI(ui) {
    // }}}
 }
 
+function manageCookies() {
+   // {{{
+
+   if (!localStorage.getItem('cookieConsent')) {
+      cookieBanner.style.display = 'block';
+   }
+
+   acceptButton.addEventListener('click', function () {
+      localStorage.setItem('cookieConsent', 'accepted');
+      cookieBanner.style.display = 'none';
+      console.log("Analytics");
+      // XXX: Analytics
+   });
+
+   rejectButton.addEventListener('click', function () {
+      localStorage.setItem('cookieConsent', 'rejected');
+      cookieBanner.style.display = 'none';
+   });
+
+   // }}}
+}
+
 async function loadPycFile(fileName) {
    // {{{
    const response = await fetch(`${fileName}`);
@@ -449,6 +476,9 @@ message.addEventListener('input', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
    // {{{
+   localStorage.clear(); // XXX
+   manageCookies();
+
    setUI('start');
 
    showElement("loading");
@@ -463,6 +493,8 @@ document.addEventListener('DOMContentLoaded', function() {
    });
    // }}}
  });
+
+
 
 
 
